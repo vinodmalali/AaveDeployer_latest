@@ -8,6 +8,8 @@ const {readFromFile, writeToFile} = require("../helper/readAndWriteContractAddre
 
 const {activateReserve,enableBorrowingOnReserve,enableReserveStableRate, configureReserveAsCollateral} = require("../helper/activateReserve");
 
+const {initToken} = require("../helper/initTokens");
+
 async function initializeConfigAndProvider() {
 
    const addresses = await readFromFile();
@@ -17,6 +19,8 @@ async function initializeConfigAndProvider() {
     const uni = addresses.uni;
 
     const providerAdr = addresses.LendingPoolAddressProvider;
+
+    // const providerAdr = "0x736Ec893C3e654b554894E9De953995D32E60dbe";
 
     //IncentiveController
 
@@ -54,7 +58,7 @@ async function initializeConfigAndProvider() {
 
     console.log("Initailized Address Provider in Configurator Implementation contract");
 
-    //LendingPoolAddressesProvider
+    LendingPoolAddressesProvider
 
     const lendingPoolAddressProviderFactory = await ethers.getContractFactory("LendingPoolAddressesProvider");
 
@@ -69,109 +73,24 @@ async function initializeConfigAndProvider() {
 
     console.log("Configurator has been set in Provider, and a proxy contract for Lending Pool Configurator is created");
     
-    //DAI
-    //aTokenDAI
-
-    const aTokenDAIAddress = addresses.aTokenDAI;
-
-    const underlyingAssetDAI = addresses.dai;
-
-    const incentiveControllerAddress = addresses.AaveIncentiveController;
     
-    const aTokenDAIFactory = await ethers.getContractFactory("AToken");
-
-    const aTokenDAIContract = await aTokenDAIFactory.attach(aTokenDAIAddress);
-
-    let args = [getLendingPoolProxy,process.env.WALLET,underlyingAssetDAI,incentiveControllerAddress,"18","Aave Matic Market DAI","amDAI","0x00"];
-
-    const initializeInaTokenDAITx = await aTokenDAIContract.initialize(...args);
-
-    await initializeInaTokenDAITx.wait();
-
-    console.log("initialized the aTokenDAI contract");
-
-    //StableDebt DAI 
-
-    const stableDebtTokenDAIAddress = addresses.stableDebtTokenDAI;
-
-    const stableDebtTokenDAIFactory = await ethers.getContractFactory("contracts/StableDebtToken.sol:StableDebtToken");
-
-    const stableDebtTokenDAIContract = await stableDebtTokenDAIFactory.attach(stableDebtTokenDAIAddress);
-
-    let stableDebtTokenDAIArgs = [getLendingPoolProxy,underlyingAssetDAI,incentiveControllerAddress,"18","Aave Matic Market stable debt DAI","stableDebtmDAI","0x00"]
-
-    const initializeNameAndSymbolInstableDebtTokenDAITx = await stableDebtTokenDAIContract.initialize(...stableDebtTokenDAIArgs);
-
-    await initializeNameAndSymbolInstableDebtTokenDAITx.wait();
-
-    console.log("initialized the StableDebt DAI contract");
-
-    //VariableDebt DAI Initialize
-
-    const variableDebtTokenDAIAddress = addresses.variableDebtTokenDAI;
-
-    const variableDebtTokenFactory = await ethers.getContractFactory("contracts/VariableDebtToken.sol:VariableDebtToken");
-
-    const variableDebtTokenContract = await variableDebtTokenFactory.attach(variableDebtTokenDAIAddress);
-
-    let variableDebtTokenArgs = [getLendingPoolProxy,underlyingAssetDAI,incentiveControllerAddress,"18","Aave Matic Market variable debt mDAI","variableDebtmDAI","0x00"]
-
-    const initializeNameAndSymbolInvariableDebtTokenTx = await variableDebtTokenContract.initialize(...variableDebtTokenArgs);
-
-    await initializeNameAndSymbolInvariableDebtTokenTx.wait();
-
-    console.log("initialized the VariableDebt DAI contract");
-
-    //UNI
-    //aTokenUNI
-
-    const aTokenUNIAddress = addresses.aTokenUNI;
-
-    const underlyingAssetUNI = addresses.uni;
+    //initToken
     
-    const aTokenUNIFactory = await ethers.getContractFactory("AToken");
+    await initToken(getLendingPoolProxy, addresses.dai, addresses.aTokenDAI, "Aave Matic Market DAI", "amDAI", addresses.stableDebtTokenDAI, "Aave Matic Market stable debt DAI", "stableDebtmDAI", addresses.variableDebtTokenDAI, "Aave Matic Market variable debt mDAI", "variableDebtmDAI");
 
-    const aTokenUNIContract = await aTokenUNIFactory.attach(aTokenUNIAddress);
+    await initToken(getLendingPoolProxy, addresses.uni, addresses.aTokenUNI, "Aave Matic Market UNI", "amUNI", addresses.stableDebtTokenUNI, "Aave Matic Market stable debt UNI", "stableDebtmUNI", addresses.variableDebtTokenUNI, "Aave Matic Market variable debt mUNI", "variableDebtmUNI");
 
-    let argsUNI = [getLendingPoolProxy,process.env.WALLET,underlyingAssetUNI,incentiveControllerAddress,"18","Aave Matic Market UNI","amUNI","0x00"];
+    await initToken(getLendingPoolProxy, addresses.wMATIC, addresses.aTokenWMATIC, "Aave Matic Market WMATIC", "amWMATIC", addresses.stableDebtTokenWMATIC, "Aave Matic Market stable debt WMATIC", "stableDebtmWMATIC", addresses.variableDebtTokenWMATIC, "Aave Matic Market variable debt mWMATIC", "variableDebtmWMATIC");
 
-    const initializeInaTokenUNITx = await aTokenUNIContract.initialize(...argsUNI);
+    await initToken(getLendingPoolProxy, addresses.aave, addresses.aTokenAave, "Aave Matic Market AAVE", "amAAVE", addresses.stableDebtTokenAave, "Aave Matic Market stable debt AAVE", "stableDebtmAAVE", addresses.variableDebtTokenAave, "Aave Matic Market variable debt mAAVE", "variableDebtmAAVE");
 
-    await initializeInaTokenUNITx.wait();
+    await initToken(getLendingPoolProxy, addresses.usdt, addresses.aTokenUSDT, "Aave Matic Market USDT", "amUSDT", addresses.stableDebtTokenUSDT, "Aave Matic Market stable debt USDT", "stableDebtmUSDT", addresses.variableDebtTokenUSDT, "Aave Matic Market variable debt mUSDT", "variableDebtmUSDT");
 
-    console.log("initialized the aTokenUNI contract");
+    await initToken(getLendingPoolProxy, addresses.usdc, addresses.aTokenUSDC, "Aave Matic Market USDC", "amUSDC", addresses.stableDebtTokenUSDC, "Aave Matic Market stable debt USDC", "stableDebtmUSDC", addresses.variableDebtTokenUSDC, "Aave Matic Market variable debt mUSDC", "variableDebtmUSDC");
 
-    //StableDebt UNI 
+    await initToken(getLendingPoolProxy, addresses.sg, addresses.aTokenSG, "Aave Matic Market SG", "amSG", addresses.stableDebtTokenSG, "Aave Matic Market stable debt SG", "stableDebtmSG", addresses.variableDebtTokenSG, "Aave Matic Market variable debt mSG", "variableDebtmSG");
 
-    const stableDebtTokenUNIAddress = addresses.stableDebtTokenUNI;
-
-    const stableDebtTokenUNIFactory = await ethers.getContractFactory("contracts/StableDebtToken.sol:StableDebtToken");
-
-    const stableDebtTokenUNIContract = await stableDebtTokenUNIFactory.attach(stableDebtTokenUNIAddress);
-
-    let stableDebtTokenUNIArgs = [getLendingPoolProxy,underlyingAssetUNI,incentiveControllerAddress,"18","Aave Matic Market stable debt UNI","stableDebtmUNI","0x00"]
-
-    const initializeNameAndSymbolInstableDebtTokenUNITx = await stableDebtTokenUNIContract.initialize(...stableDebtTokenUNIArgs);
-
-    await initializeNameAndSymbolInstableDebtTokenUNITx.wait();
-
-    console.log("initialized the StableDebt UNI contract");
-
-    //VariableDebt UNI Initialize
-
-    const variableDebtTokenUNIAddress = addresses.variableDebtTokenUNI;
-
-    const variableDebtTokenUNIFactory = await ethers.getContractFactory("contracts/VariableDebtToken.sol:VariableDebtToken");
-
-    const variableDebtTokenUNIContract = await variableDebtTokenUNIFactory.attach(variableDebtTokenUNIAddress);
-
-    let variableDebtTokenUNIArgs = [getLendingPoolProxy,underlyingAssetUNI,incentiveControllerAddress,"18","Aave Matic Market variable debt mUNI","variableDebtmUNI","0x00"]
-
-    const initializeNameAndSymbolInvariableDebtTokenUNITx = await variableDebtTokenUNIContract.initialize(...variableDebtTokenUNIArgs);
-
-    await initializeNameAndSymbolInvariableDebtTokenUNITx.wait();
-
-    console.log("initialized the VariableDebt uni contract");
+    console.log("all initToken is done");
 
    // provider set all
 
@@ -216,29 +135,49 @@ async function initializeConfigAndProvider() {
     
     //to do batchInitReserve
 
-    const DaiInterestRateStrategyAddress = addresses.DAIInterestRateStrategy;
 
-    const UniInterestRateStrategyAddress = addresses.UNIInterestRateStrategy;
 
     const incentivesController = addresses.AaveIncentiveController;
 
+    // const incentivesController = "0xcF38BA0911A8bb1CDbc95d0cFba9c37FEfDf2cF8";
+
+    
+
     let input = [
-                 [aTokenDAIAddress, stableDebtTokenDAIAddress, variableDebtTokenDAIAddress, "18", DaiInterestRateStrategyAddress, underlyingAssetDAI, process.env.WALLET, incentivesController, "DAI", "Aave Matic Market DAI", "amDAI", "Aave Matic Market variable debt DAI", "variableDebtmDAI", "Aave Matic Market stable debt DAI", "stableDebtmDAI", "0x10"],
-                 [aTokenUNIAddress, stableDebtTokenUNIAddress, variableDebtTokenUNIAddress, "18", UniInterestRateStrategyAddress, underlyingAssetUNI, process.env.WALLET, incentivesController, "UNI", "Aave Matic Market UNI", "amUNI", "Aave Matic Market variable debt UNI", "variableDebtmUNI", "Aave Matic Market stable debt UNI", "stableDebtmUNI", "0x10"]
+                 [aTokenDAIAddress, stableDebtTokenDAIAddress, variableDebtTokenDAIAddress, "18", addresses.DAIInterestRateStrategy, underlyingAssetDAI, process.env.WALLET, incentivesController, "DAI", "Aave Matic Market DAI", "amDAI", "Aave Matic Market variable debt DAI", "variableDebtmDAI", "Aave Matic Market stable debt DAI", "stableDebtmDAI", "0x10"],
+                 [aTokenUNIAddress, stableDebtTokenUNIAddress, variableDebtTokenUNIAddress, "18", addresses.UNIInterestRateStrategy, underlyingAssetUNI, process.env.WALLET, incentivesController, "UNI", "Aave Matic Market UNI", "amUNI", "Aave Matic Market variable debt UNI", "variableDebtmUNI", "Aave Matic Market stable debt UNI", "stableDebtmUNI", "0x10"],               
+                 [addresses.aTokenWMATIC, addresses.stableDebtTokenWMATIC, addresses.variableDebtTokenWMATIC, "18", addresses.WMATICInterestRateStrategy, addresses.wMATIC, process.env.WALLET, incentivesController, "Wrapped Matic", "Aave Matic Market WMATIC","amWMATIC", "Aave Matic Market variable debt mWMATIC","variableDebtmWMATIC", "Aave Matic Market stable debt WMATIC","stableDebtmWMATIC", "0x10"],
+                 [addresses.aTokenAave, addresses.stableDebtTokenAave, addresses.variableDebtTokenAave, "18", addresses.AaveInterestRateStrategy, addresses.aave, process.env.WALLET, incentivesController, "Aave", "Aave Matic Market AAVE","amAAVE", "Aave Matic Market variable debt mAAVE","variableDebtmAAVE", "Aave Matic Market stable debt AAVE","stableDebtmAAVE", "0x10"],
+                 [addresses.aTokenUSDT, addresses.stableDebtTokenUSDT, addresses.variableDebtTokenUSDT, "18", addresses.USDTInterestRateStrategy, addresses.usdt, process.env.WALLET, incentivesController, "USDT", "Aave Matic Market USDT","amUSDT", "Aave Matic Market variable debt mUSDT","variableDebtmUSDT", "Aave Matic Market stable debt USDT","stableDebtmUSDT", "0x10"],
+                 [addresses.aTokenUSDC, addresses.stableDebtTokenUSDC, addresses.variableDebtTokenUSDC, "18", addresses.USDCInterestRateStrategy, addresses.usdc, process.env.WALLET, incentivesController, "USDc", "Aave Matic Market USDC","amUSDC", "Aave Matic Market variable debt mUSDC","variableDebtmUSDC", "Aave Matic Market stable debt USDC","stableDebtmUSDC", "0x10"],
+                 [addresses.aTokenSG, addresses.stableDebtTokenSG, addresses.variableDebtTokenSG, "18", addresses.SGInterestRateStrategy, addresses.sg, process.env.WALLET, incentivesController, "SakhaGlobal", "Aave Matic Market SG","amSG", "Aave Matic Market variable debt mSG","variableDebtmSG", "Aave Matic Market stable debt SG","stableDebtmSG", "0x10"]                
                 ]
 
-    const batchInitReserveTx = await lendingPoolConfiguratorContract.batchInitReserve(input);
+    // const batchInitReserveTx = await lendingPoolConfiguratorContract.batchInitReserve(input);
 
-    await batchInitReserveTx.wait();
+    // await batchInitReserveTx.wait();
 
-    console.log("batchInitReserve completed");
+    // console.log("batchInitReserve completed");
 
+    
     //price oracle 
 
     
-    let tx = await setAssetPrice(addresses.dai, "495180000000000", addresses.PriceOracle);
+    await setAssetPrice(addresses.dai, "495180000000000", priceOracle);
 
-    let tx2 = await setAssetPrice(addresses.uni, "3200000000000000", addresses.PriceOracle);
+    await setAssetPrice(addresses.uni, "3200000000000000", priceOracle);
+
+    await setAssetPrice(addresses.wMATIC, "360000000000000", priceOracle);
+
+    await setAssetPrice(addresses.aave, "41000000000000000", priceOracle);
+
+    await setAssetPrice(addresses.usdt, "380000000000000", priceOracle);
+
+    await setAssetPrice(addresses.usdc, "380000000000000", priceOracle);
+
+    await setAssetPrice(addresses.sg, "42000000000000000", priceOracle);
+
+    
 
     console.log("prices set for DAI and UNI");
 
@@ -246,11 +185,32 @@ async function initializeConfigAndProvider() {
 
     await activateReserve(addresses.LendingPoolConfiguratorProxy, addresses.uni);
 
+    await activateReserve(addresses.LendingPoolConfiguratorProxy, addresses.wMATIC);
+
+    await activateReserve(addresses.LendingPoolConfiguratorProxy, addresses.aave);
+
+    await activateReserve(addresses.LendingPoolConfiguratorProxy, addresses.usdt);
+
+    await activateReserve(addresses.LendingPoolConfiguratorProxy, addresses.usdc);
+
+    await activateReserve(addresses.LendingPoolConfiguratorProxy, addresses.sg);
+
     console.log("activated Reserve for DAI and UNI");
 
     await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.dai);
 
     await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.uni);
+
+    await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.wMATIC);
+
+    await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.aave);
+
+    await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.usdt);
+
+    await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.usdc);
+
+    await enableBorrowingOnReserve(addresses.LendingPoolConfiguratorProxy, addresses.sg);
+
 
     console.log("enableBorrowingOnReserve for DAI and UNI");
 
@@ -258,11 +218,33 @@ async function initializeConfigAndProvider() {
 
     await enableReserveStableRate(addresses.LendingPoolConfiguratorProxy, addresses.uni);
 
-    console.log("enableReserveStableRate for DAI and UNI");
+    await enableReserveStableRate(addresses.LendingPoolConfiguratorProxy, addresses.wMATIC);
+
+    await enableReserveStableRate(addresses.LendingPoolConfiguratorProxy, addresses.aave);
+
+    await enableReserveStableRate(addresses.LendingPoolConfiguratorProxy, addresses.usdt);
+
+    await enableReserveStableRate(addresses.LendingPoolConfiguratorProxy, addresses.usdc);
+
+    await enableReserveStableRate(addresses.LendingPoolConfiguratorProxy, addresses.sg);
+
+
+    console.log("enableReserveStableRate ");
 
     await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.dai);
 
     await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.uni);
+
+    await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.wMATIC);
+
+    await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.aave);
+
+    await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.usdt);
+
+    await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.usdc);
+
+    await configureReserveAsCollateral(addresses.LendingPoolConfiguratorProxy, addresses.sg);
+
 
     console.log("configureReserveAsCollateral for DAI and UNI");
 
