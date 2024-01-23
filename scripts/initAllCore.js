@@ -153,11 +153,11 @@ async function initializeConfigAndProvider() {
                  [addresses.aTokenSG, addresses.stableDebtTokenSG, addresses.variableDebtTokenSG, "18", addresses.SGInterestRateStrategy, addresses.sg, process.env.WALLET, incentivesController, "SakhaGlobal", "Aave Matic Market SG","amSG", "Aave Matic Market variable debt mSG","variableDebtmSG", "Aave Matic Market stable debt SG","stableDebtmSG", "0x10"]                
                 ]
 
-    // const batchInitReserveTx = await lendingPoolConfiguratorContract.batchInitReserve(input);
+    const batchInitReserveTx = await lendingPoolConfiguratorContract.batchInitReserve(input);
 
-    // await batchInitReserveTx.wait();
+    await batchInitReserveTx.wait();
 
-    // console.log("batchInitReserve completed");
+    console.log("batchInitReserve completed");
 
     
     //price oracle 
