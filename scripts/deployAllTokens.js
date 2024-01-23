@@ -113,23 +113,79 @@ async function main() {
     const wMATIC = await deployWMATIC();
     const dai = await deployMintableERC20("DAI", "DAI", "18");
     const uni = await deployMintableERC20("UNI", "UNI", "18");
+
+    const Aave = await deployMintableERC20("Aave", "AAVE", "18");
+    const USDC = await deployMintableERC20("USDC", "USDC", "18");
+    const USDT = await deployMintableERC20("USDT", "USDT", "18");
+    const SG = await deployMintableERC20("SakhaGlobal", "SG", "18");
+
     const aTokenDAI = await deployAToken();
     const aTokenUNI = await deployAToken();
+    const aTokenWMATIC = await deployAToken();
+    const aTokenAave = await deployAToken();
+    const aTokenUSDT = await deployAToken();
+    const aTokenUSDC = await deployAToken();
+    const aTokenSG = await deployAToken();
+
+
     const stableDebtTokenDAI = await deployStableDebtToken();
     const variableDebtTokenDAI = await deployVariableDebtToken();
+
     const stableDebtTokenUNI = await deployStableDebtToken();
     const variableDebtTokenUNI = await deployVariableDebtToken();
+
+    const stableDebtTokenWMATIC = await deployStableDebtToken();
+    const variableDebtTokenWMATIC = await deployVariableDebtToken();
+
+    const stableDebtTokenAave = await deployStableDebtToken();
+    const variableDebtTokenAave = await deployVariableDebtToken();
+
+    const stableDebtTokenUSDT = await deployStableDebtToken();
+    const variableDebtTokenUSDT = await deployVariableDebtToken();
+
+    const stableDebtTokenUSDC = await deployStableDebtToken();
+    const variableDebtTokenUSDC = await deployVariableDebtToken();
+
+    const stableDebtTokenSG = await deployStableDebtToken();
+    const variableDebtTokenSG = await deployVariableDebtToken();
 
     const deployedContracts = {
         wMATIC: wMATIC.address,
         dai: dai.address,
         uni: uni.address,
+        aave: Aave.address,
+        usdt: USDT.address,
+        usdc: USDC.address,
+        sg: SG.address,
         aTokenDAI: aTokenDAI.address,
         aTokenUNI: aTokenUNI.address,
+
+        aTokenWMATIC: aTokenWMATIC.address,
+        aTokenAave: aTokenAave.address,
+        aTokenUSDT: aTokenUSDT.address,
+        aTokenUSDC: aTokenUSDC.address,
+        aTokenSG: aTokenSG.address,
+
         stableDebtTokenDAI: stableDebtTokenDAI.address,
         variableDebtTokenDAI: variableDebtTokenDAI.address,
         stableDebtTokenUNI: stableDebtTokenUNI.address,
         variableDebtTokenUNI: variableDebtTokenUNI.address,
+
+        stableDebtTokenWMATIC: stableDebtTokenWMATIC.address,
+        variableDebtTokenWMATIC: variableDebtTokenWMATIC.address,
+
+        stableDebtTokenAave: stableDebtTokenAave.address,
+        variableDebtTokenAave: variableDebtTokenAave.address,
+
+        stableDebtTokenUSDT: stableDebtTokenUSDT.address,
+        variableDebtTokenUSDT: variableDebtTokenUSDT.address,
+
+        stableDebtTokenUSDC: stableDebtTokenUSDC.address,
+        variableDebtTokenUSDC: variableDebtTokenUSDC.address,
+
+        stableDebtTokenSG: stableDebtTokenSG.address,
+        variableDebtTokenSG: variableDebtTokenSG.address,
+
     };
 
     await writeToFile(deployedContracts);
