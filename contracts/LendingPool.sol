@@ -1,5 +1,5 @@
 
-// File: contracts/interfaces/IReserveInterestRateStrategy.sol
+// File: contracts/Aave/contracts/interfaces/IReserveInterestRateStrategy.sol
 
 
 pragma solidity 0.6.12;
@@ -49,7 +49,7 @@ interface IReserveInterestRateStrategy {
     );
 }
 
-// File: contracts/protocol/libraries/helpers/Errors.sol
+// File: contracts/Aave/contracts/protocol/libraries/helpers/Errors.sol
 
 
 pragma solidity 0.6.12;
@@ -171,7 +171,7 @@ library Errors {
   }
 }
 
-// File: contracts/protocol/libraries/math/PercentageMath.sol
+// File: contracts/Aave/contracts/protocol/libraries/math/PercentageMath.sol
 
 
 pragma solidity 0.6.12;
@@ -227,7 +227,7 @@ library PercentageMath {
   }
 }
 
-// File: contracts/protocol/libraries/math/WadRayMath.sol
+// File: contracts/Aave/contracts/protocol/libraries/math/WadRayMath.sol
 
 
 pragma solidity 0.6.12;
@@ -364,7 +364,7 @@ library WadRayMath {
   }
 }
 
-// File: contracts/protocol/libraries/aave-upgradeability/VersionedInitializable.sol
+// File: contracts/Aave/contracts/protocol/libraries/aave-upgradeability/VersionedInitializable.sol
 
 
 pragma solidity 0.6.12;
@@ -444,7 +444,7 @@ abstract contract VersionedInitializable {
   uint256[50] private ______gap;
 }
 
-// File: contracts/interfaces/IPriceOracleGetter.sol
+// File: contracts/Aave/contracts/interfaces/IPriceOracleGetter.sol
 
 
 pragma solidity 0.6.12;
@@ -463,7 +463,7 @@ interface IPriceOracleGetter {
   function getAssetPrice(address asset) external view returns (uint256);
 }
 
-// File: contracts/interfaces/IAaveIncentivesController.sol
+// File: contracts/Aave/contracts/interfaces/IAaveIncentivesController.sol
 
 
 pragma solidity 0.6.12;
@@ -614,7 +614,7 @@ interface IAaveIncentivesController {
   function DISTRIBUTION_END() external view returns (uint256);
 }
 
-// File: contracts/protocol/libraries/types/DataTypes.sol
+// File: contracts/Aave/contracts/protocol/libraries/types/DataTypes.sol
 
 
 pragma solidity 0.6.12;
@@ -666,7 +666,7 @@ library DataTypes {
   enum InterestRateMode {NONE, STABLE, VARIABLE}
 }
 
-// File: contracts/protocol/libraries/configuration/UserConfiguration.sol
+// File: contracts/Aave/contracts/protocol/libraries/configuration/UserConfiguration.sol
 
 
 pragma solidity 0.6.12;
@@ -779,7 +779,7 @@ library UserConfiguration {
   }
 }
 
-// File: contracts/protocol/libraries/configuration/ReserveConfiguration.sol
+// File: contracts/Aave/contracts/protocol/libraries/configuration/ReserveConfiguration.sol
 
 
 pragma solidity 0.6.12;
@@ -1147,7 +1147,7 @@ library ReserveConfiguration {
   }
 }
 
-// File: contracts/interfaces/IScaledBalanceToken.sol
+// File: contracts/Aave/contracts/interfaces/IScaledBalanceToken.sol
 
 
 pragma solidity 0.6.12;
@@ -1176,7 +1176,7 @@ interface IScaledBalanceToken {
   function scaledTotalSupply() external view returns (uint256);
 }
 
-// File: contracts/interfaces/ILendingPoolAddressesProvider.sol
+// File: contracts/Aave/contracts/interfaces/ILendingPoolAddressesProvider.sol
 
 
 pragma solidity 0.6.12;
@@ -1239,11 +1239,11 @@ interface ILendingPoolAddressesProvider {
   function setLendingRateOracle(address lendingRateOracle) external;
 }
 
-// File: contracts/interfaces/ILendingPool.sol
+// File: contracts/Aave/contracts/interfaces/ILendingPool.sol
 
 
 pragma solidity 0.6.12;
-
+// pragma experimental ABIEncoderV2;
 
 
 
@@ -1651,7 +1651,7 @@ interface ILendingPool {
   function paused() external view returns (bool);
 }
 
-// File: contracts/flashloan/interfaces/IFlashLoanReceiver.sol
+// File: contracts/Aave/contracts/flashloan/interfaces/IFlashLoanReceiver.sol
 
 
 pragma solidity 0.6.12;
@@ -1678,7 +1678,7 @@ interface IFlashLoanReceiver {
   function LENDING_POOL() external view returns (ILendingPool);
 }
 
-// File: contracts/interfaces/IInitializableDebtToken.sol
+// File: contracts/Aave/contracts/interfaces/IInitializableDebtToken.sol
 
 
 pragma solidity 0.6.12;
@@ -1731,7 +1731,7 @@ interface IInitializableDebtToken {
   ) external;
 }
 
-// File: contracts/interfaces/IStableDebtToken.sol
+// File: contracts/Aave/contracts/interfaces/IStableDebtToken.sol
 
 
 pragma solidity 0.6.12;
@@ -1866,7 +1866,7 @@ interface IStableDebtToken is IInitializableDebtToken {
   function getIncentivesController() external view returns (IAaveIncentivesController);
 }
 
-// File: contracts/interfaces/IVariableDebtToken.sol
+// File: contracts/Aave/contracts/interfaces/IVariableDebtToken.sol
 
 
 pragma solidity 0.6.12;
@@ -1930,7 +1930,7 @@ interface IVariableDebtToken is IScaledBalanceToken, IInitializableDebtToken {
   function getIncentivesController() external view returns (IAaveIncentivesController);
 }
 
-// File: contracts/interfaces/IInitializableAToken.sol
+// File: contracts/Aave/contracts/interfaces/IInitializableAToken.sol
 
 
 pragma solidity 0.6.12;
@@ -1987,7 +1987,7 @@ interface IInitializableAToken {
   ) external;
 }
 
-// File: contracts/dependencies/openzeppelin/contracts/Address.sol
+// File: contracts/Aave/contracts/dependencies/openzeppelin/contracts/Address.sol
 
 
 pragma solidity 0.6.12;
@@ -2051,7 +2051,7 @@ library Address {
   }
 }
 
-// File: contracts/dependencies/openzeppelin/contracts/IERC20.sol
+// File: contracts/Aave/contracts/dependencies/openzeppelin/contracts/IERC20.sol
 
 
 pragma solidity 0.6.12;
@@ -2134,7 +2134,7 @@ interface IERC20 {
   event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-// File: contracts/protocol/libraries/helpers/Helpers.sol
+// File: contracts/Aave/contracts/protocol/libraries/helpers/Helpers.sol
 
 
 pragma solidity 0.6.12;
@@ -2175,7 +2175,7 @@ library Helpers {
   }
 }
 
-// File: contracts/interfaces/IAToken.sol
+// File: contracts/Aave/contracts/interfaces/IAToken.sol
 
 
 pragma solidity 0.6.12;
@@ -2284,7 +2284,7 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   function UNDERLYING_ASSET_ADDRESS() external view returns (address);
 }
 
-// File: contracts/dependencies/openzeppelin/contracts/SafeMath.sol
+// File: contracts/Aave/contracts/dependencies/openzeppelin/contracts/SafeMath.sol
 
 
 pragma solidity 0.6.12;
@@ -2450,7 +2450,7 @@ library SafeMath {
   }
 }
 
-// File: contracts/protocol/libraries/math/MathUtils.sol
+// File: contracts/Aave/contracts/protocol/libraries/math/MathUtils.sol
 
 
 pragma solidity 0.6.12;
@@ -2536,7 +2536,7 @@ library MathUtils {
   }
 }
 
-// File: contracts/dependencies/openzeppelin/contracts/SafeERC20.sol
+// File: contracts/Aave/contracts/dependencies/openzeppelin/contracts/SafeERC20.sol
 
 
 
@@ -2602,7 +2602,7 @@ library SafeERC20 {
   }
 }
 
-// File: contracts/protocol/libraries/logic/ReserveLogic.sol
+// File: contracts/Aave/contracts/protocol/libraries/logic/ReserveLogic.sol
 
 
 pragma solidity 0.6.12;
@@ -2977,7 +2977,7 @@ library ReserveLogic {
   }
 }
 
-// File: contracts/protocol/lendingpool/LendingPoolStorage.sol
+// File: contracts/Aave/contracts/protocol/lendingpool/LendingPoolStorage.sol
 
 
 pragma solidity 0.6.12;
@@ -3011,11 +3011,11 @@ contract LendingPoolStorage {
   uint256 internal _maxNumberOfReserves;
 }
 
-// File: contracts/protocol/libraries/logic/GenericLogic.sol
+// File: contracts/Aave/contracts/protocol/libraries/logic/GenericLogic.sol
 
 
 pragma solidity 0.6.12;
-
+// pragma experimental ABIEncoderV2;
 
 
 
@@ -3288,11 +3288,11 @@ library GenericLogic {
   }
 }
 
-// File: contracts/protocol/libraries/logic/ValidationLogic.sol
+// File: contracts/Aave/contracts/protocol/libraries/logic/ValidationLogic.sol
 
 
 pragma solidity 0.6.12;
-
+// pragma experimental ABIEncoderV2;
 
 
 
@@ -3759,10 +3759,11 @@ library ValidationLogic {
   }
 }
 
-// File: contracts/protocol/lendingpool/LendingPool.sol
+// File: contracts/Aave/contracts/protocol/lendingpool/LendingPool.sol
 
 
 pragma solidity 0.6.12;
+// pragma experimental ABIEncoderV2;
 
 
 
@@ -3787,6 +3788,13 @@ pragma solidity 0.6.12;
 
 
 
+// interface ISakha {
+
+//     function reward(address to,address tokenA,  address tokenB, uint amountADesired, uint amountBDesired) external  ; 
+//     function rewardBorrow(address to,address token, uint amountDesired) external  ;
+//     function rewardRepay(address to,address token, uint amountDesired) external  ;
+
+// }
 
 /**
  * @title LendingPool contract
@@ -3811,7 +3819,13 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
   using PercentageMath for uint256;
   using SafeERC20 for IERC20;
 
+  //main configuration parameters
+  uint256 public constant MAX_STABLE_RATE_BORROW_SIZE_PERCENT = 2500;
+  uint256 public constant FLASHLOAN_PREMIUM_TOTAL = 9;
+  uint256 public constant MAX_NUMBER_RESERVES = 128;
   uint256 public constant LENDINGPOOL_REVISION = 0x2;
+
+  address public sakha;
 
   modifier whenNotPaused() {
     _whenNotPaused();
@@ -3847,11 +3861,11 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
    **/
   function initialize(ILendingPoolAddressesProvider provider) public initializer {
     _addressesProvider = provider;
-    _maxStableRateBorrowSizePercent = 2500;
-    _flashLoanPremiumTotal = 9;
-    _maxNumberOfReserves = 128;
   }
 
+  function setSakha(address _sakha) public  {
+    sakha = _sakha;
+  }
   /**
    * @dev Deposits an `amount` of underlying asset into the reserve, receiving in return overlying aTokens.
    * - E.g. User deposits 100 USDC and gets in return 100 aUSDC
@@ -3887,6 +3901,8 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
       emit ReserveUsedAsCollateralEnabled(asset, onBehalfOf);
     }
 
+    // ISakha(sakha).reward(msg.sender, asset, address(0), amount, 0);
+
     emit Deposit(asset, msg.sender, onBehalfOf, amount, referralCode);
   }
 
@@ -3905,7 +3921,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
     address asset,
     uint256 amount,
     address to
-  ) external override whenNotPaused returns (uint256) {
+  ) external override whenNotPaused  returns (uint256) {
     DataTypes.ReserveData storage reserve = _reserves[asset];
 
     address aToken = reserve.aTokenAddress;
@@ -3981,6 +3997,9 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
         true
       )
     );
+
+    // ISakha(sakha).rewardBorrow(msg.sender, asset,amount);
+
   }
 
   /**
@@ -4044,7 +4063,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
 
     IERC20(asset).safeTransferFrom(msg.sender, aToken, paybackAmount);
 
-    IAToken(aToken).handleRepayment(msg.sender, paybackAmount);
+    // ISakha(sakha).rewardRepay(msg.sender, asset,amount);
 
     emit Repay(asset, onBehalfOf, msg.sender, paybackAmount);
 
@@ -4205,7 +4224,6 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
           receiveAToken
         )
       );
-
     require(success, Errors.LP_LIQUIDATION_CALL_FAILED);
 
     (uint256 returnCode, string memory returnMessage) = abi.decode(result, (uint256, string));
@@ -4263,7 +4281,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
     for (vars.i = 0; vars.i < assets.length; vars.i++) {
       aTokenAddresses[vars.i] = _reserves[assets[vars.i]].aTokenAddress;
 
-      premiums[vars.i] = amounts[vars.i].mul(_flashLoanPremiumTotal).div(10000);
+      premiums[vars.i] = amounts[vars.i].mul(FLASHLOAN_PREMIUM_TOTAL).div(10000);
 
       IAToken(aTokenAddresses[vars.i]).transferUnderlyingTo(receiverAddress, amounts[vars.i]);
     }
@@ -4468,27 +4486,6 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
   }
 
   /**
-   * @dev Returns the percentage of available liquidity that can be borrowed at once at stable rate
-   */
-  function MAX_STABLE_RATE_BORROW_SIZE_PERCENT() public view returns (uint256) {
-    return _maxStableRateBorrowSizePercent;
-  }
-
-  /**
-   * @dev Returns the fee on flash loans 
-   */
-  function FLASHLOAN_PREMIUM_TOTAL() public view returns (uint256) {
-    return _flashLoanPremiumTotal;
-  }
-
-  /**
-   * @dev Returns the maximum number of reserves supported to be listed in this LendingPool
-   */
-  function MAX_NUMBER_RESERVES() public view returns (uint256) {
-    return _maxNumberOfReserves;
-  }
-
-  /**
    * @dev Validates and finalizes an aToken transfer
    * - Only callable by the overlying aToken of the `asset`
    * @param asset The address of the underlying asset of the aToken
@@ -4632,7 +4629,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
       vars.amount,
       amountInETH,
       vars.interestRateMode,
-      _maxStableRateBorrowSizePercent,
+      MAX_STABLE_RATE_BORROW_SIZE_PERCENT,
       _reserves,
       userConfig,
       _reservesList,
@@ -4694,7 +4691,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
   function _addReserveToList(address asset) internal {
     uint256 reservesCount = _reservesCount;
 
-    require(reservesCount < _maxNumberOfReserves, Errors.LP_NO_MORE_RESERVES_ALLOWED);
+    require(reservesCount < MAX_NUMBER_RESERVES, Errors.LP_NO_MORE_RESERVES_ALLOWED);
 
     bool reserveAlreadyAdded = _reserves[asset].id != 0 || _reservesList[0] == asset;
 
